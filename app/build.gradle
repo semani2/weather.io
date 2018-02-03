@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -17,7 +19,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField("String", "API_BASE_URL", "\"http://api.wunderground.com/api/24f0b7e4ed53f605/forecast10day/q\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://api.wunderground.com/api/24f0b7e4ed53f605/forecast10day/q/\"")
         }
         release {
             minifyEnabled false
@@ -92,7 +94,7 @@ dependencies {
     // Room
     implementation "android.arch.persistence.room:runtime:$archVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$archVersion"
-    //kapt "android.arch.persistence.room:compiler:$archVersion"
+    kapt "android.arch.persistence.room:compiler:$archVersion"
     compile "android.arch.persistence.room:rxjava2:$archVersion"
 
     // Dependencies for Android unit tests

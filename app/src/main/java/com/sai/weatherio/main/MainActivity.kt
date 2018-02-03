@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.sai.weatherio.R
 import com.sai.weatherio.adapters.ForecastAdapter
+import com.sai.weatherio.app.WeatherApplication
 import com.sai.weatherio.model.Resource
 import com.sai.weatherio.model.SingleDayForecast
 import com.sai.weatherio.viewmodels.ForecastCollectionViewModel
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        AndroidInjection.inject(this)
+        (application as WeatherApplication).applicationComponent.inject(this);
 
         viewmodel = ViewModelProviders.of(this, viewmodelFactory)
                 .get(ForecastCollectionViewModel::class.java)

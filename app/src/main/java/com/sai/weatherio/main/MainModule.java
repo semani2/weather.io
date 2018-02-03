@@ -16,14 +16,11 @@ import dagger.android.ContributesAndroidInjector;
  */
 
 @Module
-public abstract class MainModule {
+public class MainModule {
 
     @Provides
     @Singleton
     public ViewModelProvider.Factory provideViewModelFactory(IForecastRepository logRepository) {
         return new ForecastViewModelFactory(logRepository);
     }
-
-    @ContributesAndroidInjector(modules = MainModule.class)
-    abstract MainActivity contributeMainActivityInjector();
 }

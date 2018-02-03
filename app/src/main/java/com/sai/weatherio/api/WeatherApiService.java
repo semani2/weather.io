@@ -14,6 +14,6 @@ import retrofit2.http.Path;
 
 public interface WeatherApiService {
 
-    @GET("/{stateCode}/{cityCode}.json")
+    @GET("/api/24f0b7e4ed53f605/forecast10day/q/{stateCode}/{cityCode}.json")
     Flowable<Weather> getWeatherForecast(@Path("stateCode") String stateCode, @Path("cityCode") String cityCode);
 }

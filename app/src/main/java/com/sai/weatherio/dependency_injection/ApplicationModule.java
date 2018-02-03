@@ -2,10 +2,15 @@ package com.sai.weatherio.dependency_injection;
 
 import android.app.Application;
 
+import com.sai.weatherio.app.WeatherApplication;
+import com.sai.weatherio.main.MainActivity;
+import com.sai.weatherio.main.MainModule;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
 
 /**
  * Created by sai on 2/2/18.
@@ -14,16 +19,15 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
 
-    private Application mApplication;
+    private WeatherApplication mApplication;
 
-    public ApplicationModule(Application application) {
+    public ApplicationModule(WeatherApplication application) {
         this.mApplication = application;
     }
 
     @Provides
     @Singleton
-    public Application provideApplication() {
+    public WeatherApplication provideApplication() {
         return mApplication;
     }
-
 }
