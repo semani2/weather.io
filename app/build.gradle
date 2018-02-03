@@ -17,6 +17,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            buildConfigField("String", "API_BASE_URL", "\"http://api.wunderground.com/api/24f0b7e4ed53f605/forecast10day/q\"")
         }
         release {
             minifyEnabled false

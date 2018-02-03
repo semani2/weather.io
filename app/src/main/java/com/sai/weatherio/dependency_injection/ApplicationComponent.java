@@ -1,5 +1,6 @@
 package com.sai.weatherio.dependency_injection;
 
+import com.sai.weatherio.api.WeatherApiModule;
 import com.sai.weatherio.app.WeatherApplication;
 
 import javax.inject.Singleton;
@@ -12,7 +13,7 @@ import dagger.android.AndroidInjectionModule;
  */
 
 @Singleton
-@Component(modules = {AndroidInjectionModule.class})
+@Component(modules = {AndroidInjectionModule.class, ApplicationModule.class, WeatherApiModule.class})
 public interface ApplicationComponent {
 
     void inject(WeatherApplication application);

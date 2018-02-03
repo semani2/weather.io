@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
 
 /**
  * Created by sai on 2/2/18.
@@ -22,4 +23,7 @@ public abstract class MainModule {
     public ViewModelProvider.Factory provideViewModelFactory(IWeatherRepository logRepository) {
         return new WeatherViewModelFactory(logRepository);
     }
+
+    @ContributesAndroidInjector(modules = MainModule.class)
+    abstract MainActivity contributeMainActivityInjector();
 }
