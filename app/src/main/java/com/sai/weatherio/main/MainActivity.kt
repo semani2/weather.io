@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.sai.weatherio.R
@@ -18,8 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     @Inject lateinit var viewmodelFactory: ViewModelProvider.Factory
 
     private lateinit var viewmodel: ForecastCollectionViewModel
@@ -37,11 +37,14 @@ class MainActivity : AppCompatActivity() {
         viewmodel = ViewModelProviders.of(this, viewmodelFactory)
                 .get(ForecastCollectionViewModel::class.java)
 
+        swipe_container.setOnRefreshListener(this)
+
         viewmodel.getForecast("xyz", true).observe(this, Observer<Resource<List<SingleDayForecast>>> {
             resource ->
             run {
-                resource?.let {
+                if (resource != null) {
                     if (resource.status.contentEquals(Resource.SUCCESS)) {
+                        swipe_container.isRefreshing = false
                         setListData(resource.data)
                     } else if (resource.status.contentEquals(Resource.ERROR)) {
                         Toast.makeText(this, "Error finding weather", Toast.LENGTH_LONG).show()
@@ -51,6 +54,15 @@ class MainActivity : AppCompatActivity() {
         })
 
         initRecyclerView()
+        initFetch()
+    }
+
+    private fun initFetch() {
+        fetch_button.setOnClickListener { fetchWeatherData() }
+    }
+
+    private fun fetchWeatherData() {
+        viewmodel.getForecast("xyx", true)
     }
 
     private fun initRecyclerView() {
@@ -72,5 +84,10 @@ class MainActivity : AppCompatActivity() {
             forecastList.addAll(list)
             adapter.notifyDataSetChanged()
         }
+    }
+
+    override fun onRefresh() {
+        swipe_container.isRefreshing = true
+        fetchWeatherData()
     }
 }

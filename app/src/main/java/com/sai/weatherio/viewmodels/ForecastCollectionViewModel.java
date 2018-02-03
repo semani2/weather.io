@@ -17,24 +17,19 @@ public class ForecastCollectionViewModel extends ViewModel{
 
     private final IForecastRepository mRepository;
 
-    private MutableLiveData<Resource<List<SingleDayForecast>>> forecast;
+    public MutableLiveData<Resource<List<SingleDayForecast>>> forecast = new MutableLiveData<>();
 
     public ForecastCollectionViewModel(IForecastRepository repository) {
         this.mRepository = repository;
     }
 
     public MutableLiveData<Resource<List<SingleDayForecast>>> getForecast(String location, boolean forceRefresh) {
-        if(forecast == null || forceRefresh) {
-            forecast = new MutableLiveData<>();
-            loadWeather(location, forceRefresh);
-        }
-
-        return forecast;
+        return loadWeather(location, forceRefresh);
     }
 
-    private void loadWeather(String location, boolean forceRefresh) {
+    private MutableLiveData<Resource<List<SingleDayForecast>>> loadWeather(String location, boolean forceRefresh) {
         String state = "NC";
         String city = "Raleigh";
-        forecast = mRepository.loadWeather(city, state, forceRefresh);
+        return mRepository.loadWeather(city, state, forceRefresh);
     }
 }

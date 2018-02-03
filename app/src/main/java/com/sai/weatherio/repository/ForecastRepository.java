@@ -22,6 +22,7 @@ import io.reactivex.FlowableSubscriber;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 import timber.log.Timber;
 
 /**
@@ -49,12 +50,7 @@ public class ForecastRepository implements IForecastRepository {
     public <T extends Object> MutableLiveData<Resource<T>> loadWeather(String city, String state, boolean forceAPI) {
         final MutableLiveData<Resource<T>> data = new MutableLiveData<>();
 
-        final FlowableSubscriber<List<SingleDayForecast>> subscriber = new FlowableSubscriber<List<SingleDayForecast>>() {
-            @Override
-            public void onSubscribe(Subscription s) {
-                Timber.d("Subscribed to weather api to fetch data");
-            }
-
+        final DisposableSubscriber<List<SingleDayForecast>> subscriber = new DisposableSubscriber<List<SingleDayForecast>>() {
             @Override
             public void onNext(List<SingleDayForecast> singleDayForecasts) {
                 Resource<List<SingleDayForecast>> listResource = Resource.success(singleDayForecasts);
@@ -73,13 +69,17 @@ public class ForecastRepository implements IForecastRepository {
             }
         };
 
+        Flowable<List<SingleDayForecast>> mFlowable;
         if(forceAPI) {
-            loadWeatherFromApi(city, state)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(subscriber);
+            mFlowable = loadWeatherFromApi(city, state);
+
+        } else {
+            mFlowable = loadWeatherFromCache(city, state).switchIfEmpty(loadWeatherFromApi(city, state));
         }
-        loadWeatherFromCache(city, state).switchIfEmpty(loadWeatherFromApi(city, state));
+
+        mFlowable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(subscriber);
 
         return data;
     }
