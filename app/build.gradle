@@ -5,11 +5,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.sai.weatherio"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -26,8 +26,12 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 ext {
-    supportLibraryVersion = "26.1.0"
+    supportLibraryVersion = "27.0.2"
     retrofitVersion = "2.3.0"
     gsonVersion = "2.8.1"
     daggerVersion = "2.13"
@@ -39,7 +43,7 @@ ext {
     testRunnerVersion = "1.0.1"
     mockitoVersion = "2.7.9"
     archVersion = '1.0.0'
-    glideVersion = '4.4.0'
+    glideVersion = '4.6.1'
 }
 
 dependencies {
@@ -88,7 +92,7 @@ dependencies {
     // Room
     implementation "android.arch.persistence.room:runtime:$archVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$archVersion"
-    kapt "android.arch.persistence.room:compiler:$archVersion"
+    //kapt "android.arch.persistence.room:compiler:$archVersion"
     compile "android.arch.persistence.room:rxjava2:$archVersion"
 
     // Dependencies for Android unit tests
@@ -111,7 +115,7 @@ dependencies {
     //Stetho
     compile 'com.facebook.stetho:stetho:1.5.0'
 
-    //Glide
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+    //Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 }

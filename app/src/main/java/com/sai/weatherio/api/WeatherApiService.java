@@ -3,6 +3,7 @@ package com.sai.weatherio.api;
 import com.sai.weatherio.api.model.Weather;
 
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -14,5 +15,5 @@ import retrofit2.http.Path;
 public interface WeatherApiService {
 
     @GET("/{stateCode}/{cityCode}.json")
-    Observable<Weather> getWeatherForecast(@Path("stateCode") String stateCode, @Path("cityCode") String cityCode);
+    Flowable<Weather> getWeatherForecast(@Path("stateCode") String stateCode, @Path("cityCode") String cityCode);
 }

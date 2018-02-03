@@ -9,6 +9,7 @@ import com.sai.weatherio.model.SingleDayForecast;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 /**
  * Created by sai on 2/3/18.
@@ -20,8 +21,8 @@ public interface ForecastDao {
     @Insert
     public void insertForecasts(List<SingleDayForecast> forecasts);
 
-    @Query("SELECT * FROM SingleDayForecast where location = :location")
-    public Flowable<SingleDayForecast> getWeatherForecast(String location);
+    @Query("SELECT * FROM SingleDayForecast where city = :city AND state = :state")
+    public List<SingleDayForecast> getWeatherForecast(String city, String state);
 
     @Query("DELETE FROM SingleDayForecast")
     public void deleteWeatherData();

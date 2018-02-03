@@ -11,7 +11,8 @@ import android.arch.persistence.room.PrimaryKey
         var dayName: String,
         var iconUrl: String,
         var description: String,
-        var location: String
+        var city: String,
+        var state: String
 ) {
-    constructor(): this(0, "", "", "", "")
+    constructor(): this(0, "", "", "", "", "")
 }
