@@ -13,6 +13,8 @@ public class Forecast
     @Expose
     private TxtForecast txt_forecast;
 
+    public Forecast() {}
+
     public TxtForecast getTxt_forecast ()
     {
         return txt_forecast;

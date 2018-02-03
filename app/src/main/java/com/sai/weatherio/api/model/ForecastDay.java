@@ -37,6 +37,8 @@ public class ForecastDay {
     @Expose
     private String period;
 
+    public ForecastDay() {}
+
     public String getIcon ()
     {
         return icon;

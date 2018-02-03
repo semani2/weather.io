@@ -17,6 +17,8 @@ public class TxtForecast {
     @Expose
     private String date;
 
+    public TxtForecast() {}
+
     public ForecastDay[] getForecastday ()
     {
         return forecastday;

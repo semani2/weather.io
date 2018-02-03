@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.sai.weatherio.repository.IWeatherRepository;
+import com.sai.weatherio.repository.IForecastRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,19 +14,19 @@ import javax.inject.Singleton;
  */
 
 @Singleton
-public class WeatherViewModelFactory implements ViewModelProvider.Factory {
+public class ForecastViewModelFactory implements ViewModelProvider.Factory {
 
-    private final IWeatherRepository mRepository;
+    private final IForecastRepository mRepository;
 
     @Inject
-    public WeatherViewModelFactory(IWeatherRepository repository) {
+    public ForecastViewModelFactory(IForecastRepository repository) {
         this.mRepository = repository;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if(modelClass.isAssignableFrom(WeatherCollectionViewModel.class)) return (T) new WeatherCollectionViewModel(mRepository);
+        if(modelClass.isAssignableFrom(ForecastCollectionViewModel.class)) return (T) new ForecastCollectionViewModel(mRepository);
         else throw new IllegalArgumentException("ViewModel not found");
     }
 }

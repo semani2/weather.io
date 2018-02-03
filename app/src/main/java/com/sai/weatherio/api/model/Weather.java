@@ -13,6 +13,8 @@ public class Weather {
     @Expose
     private Forecast forecast;
 
+    public Weather() {}
+
     public Forecast getForecast ()
     {
         return forecast;

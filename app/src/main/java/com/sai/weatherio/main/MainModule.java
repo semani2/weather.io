@@ -2,8 +2,8 @@ package com.sai.weatherio.main;
 
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.sai.weatherio.repository.IWeatherRepository;
-import com.sai.weatherio.viewmodels.WeatherViewModelFactory;
+import com.sai.weatherio.repository.IForecastRepository;
+import com.sai.weatherio.viewmodels.ForecastViewModelFactory;
 
 import javax.inject.Singleton;
 
@@ -20,8 +20,8 @@ public abstract class MainModule {
 
     @Provides
     @Singleton
-    public ViewModelProvider.Factory provideViewModelFactory(IWeatherRepository logRepository) {
-        return new WeatherViewModelFactory(logRepository);
+    public ViewModelProvider.Factory provideViewModelFactory(IForecastRepository logRepository) {
+        return new ForecastViewModelFactory(logRepository);
     }
 
     @ContributesAndroidInjector(modules = MainModule.class)

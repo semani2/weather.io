@@ -12,7 +12,7 @@ import dagger.Provides;
  */
 
 @Module
-public abstract class ApplicationModule {
+public class ApplicationModule {
 
     private Application mApplication;
 
