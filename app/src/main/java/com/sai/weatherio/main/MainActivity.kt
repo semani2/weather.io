@@ -1,7 +1,8 @@
-package com.sai.weatherio
+package com.sai.weatherio.main
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.sai.weatherio.R
 
 class MainActivity : AppCompatActivity() {
 
