@@ -1,15 +1,10 @@
 package com.sai.weatherio.repository;
 
-import android.arch.lifecycle.MutableLiveData;
-
 import com.sai.weatherio.api.WeatherApiService;
 import com.sai.weatherio.api.model.ForecastDay;
 import com.sai.weatherio.api.model.Weather;
-import com.sai.weatherio.model.Resource;
 import com.sai.weatherio.model.SingleDayForecast;
 import com.sai.weatherio.room.ForecastDao;
-
-import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +13,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
-import io.reactivex.FlowableSubscriber;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
-import timber.log.Timber;
 
 /**
  * Created by sai on 2/3/18.
@@ -47,41 +38,9 @@ public class ForecastRepository implements IForecastRepository {
     }
 
     @Override
-    public <T extends Object> MutableLiveData<Resource<T>> loadWeather(String city, String state, boolean forceAPI) {
-        final MutableLiveData<Resource<T>> data = new MutableLiveData<>();
-
-        final DisposableSubscriber<List<SingleDayForecast>> subscriber = new DisposableSubscriber<List<SingleDayForecast>>() {
-            @Override
-            public void onNext(List<SingleDayForecast> singleDayForecasts) {
-                Resource<List<SingleDayForecast>> listResource = Resource.success(singleDayForecasts);
-                data.setValue((Resource<T>) listResource);
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                Resource<Throwable> errorResource = Resource.error(t.getLocalizedMessage(), t);
-                data.setValue((Resource<T>) errorResource);
-            }
-
-            @Override
-            public void onComplete() {
-                Timber.d("Completed subscribing to weather api");
-            }
-        };
-
-        Flowable<List<SingleDayForecast>> mFlowable;
-        if(forceAPI) {
-            mFlowable = loadWeatherFromApi(city, state);
-
-        } else {
-            mFlowable = loadWeatherFromCache(city, state).switchIfEmpty(loadWeatherFromApi(city, state));
-        }
-
-        mFlowable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(subscriber);
-
-        return data;
+    public Flowable<List<SingleDayForecast>> loadWeather(String city, String state) {
+        return loadWeatherFromApi(city, state);
+                //: loadWeatherFromCache(city, state).switchIfEmpty(loadWeatherFromApi(city, state));
     }
 
     private Flowable<List<SingleDayForecast>> loadWeatherFromApi(final String city, final String state) {
@@ -104,6 +63,13 @@ public class ForecastRepository implements IForecastRepository {
                             ));
                         }
                         return list;
+                    }
+                })
+                .doOnNext(new Consumer<List<SingleDayForecast>>() {
+                    @Override
+                    public void accept(List<SingleDayForecast> singleDayForecasts) throws Exception {
+                        mForecastDao.deleteWeatherData(city, state);
+                        mForecastDao.insertForecasts(singleDayForecasts);
                     }
                 });
     }

@@ -14,7 +14,6 @@ import com.sai.weatherio.app.WeatherApplication
 import com.sai.weatherio.model.Resource
 import com.sai.weatherio.model.SingleDayForecast
 import com.sai.weatherio.viewmodels.ForecastCollectionViewModel
-import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,15 +38,15 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
         swipe_container.setOnRefreshListener(this)
 
-        viewmodel.getForecast("xyz", true).observe(this, Observer<Resource<List<SingleDayForecast>>> {
+        viewmodel.forecast.observe(this, Observer<Resource<List<SingleDayForecast>>> {
             resource ->
             run {
-                if (resource != null) {
+                resource?.let {
                     if (resource.status.contentEquals(Resource.SUCCESS)) {
                         swipe_container.isRefreshing = false
                         setListData(resource.data)
                     } else if (resource.status.contentEquals(Resource.ERROR)) {
-                        Toast.makeText(this, "Error finding weather", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun fetchWeatherData() {
-        viewmodel.getForecast("xyx", true)
+        viewmodel.getForecast(location_edit_text.text.toString())
     }
 
     private fun initRecyclerView() {

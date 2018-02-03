@@ -16,5 +16,5 @@ import io.reactivex.Flowable;
 
 public interface IForecastRepository {
 
-    <T extends Object> MutableLiveData<Resource<T>> loadWeather(String city, String state, boolean forceAPI);
+    Flowable<List<SingleDayForecast>> loadWeather(String city, String state);
 }
