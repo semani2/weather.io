@@ -57,8 +57,14 @@ public class ForecastRepository implements IForecastRepository {
                         List<SingleDayForecast> list = new ArrayList<>();
                         for(int i = 0; i < forecastDays.length - 1; i+=2) {
                             ForecastDay forecastDay = forecastDays[i];
+                            String title = forecastDay.getTitle();
+                            if(i == 0) {
+                                title = "Today";
+                            } else if( i == 2) {
+                                title = "Tomorrow";
+                            }
                             list.add(new SingleDayForecast(
-                                   0, forecastDay.getTitle(), forecastDay.getIcon_url(),
+                                   0, title, forecastDay.getIcon_url(),
                                     forecastDay.getFcttext(), city, state
                             ));
                         }
