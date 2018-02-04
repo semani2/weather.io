@@ -1,6 +1,5 @@
 package com.sai.weatherio.app;
 
-import android.app.Activity;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
@@ -11,11 +10,6 @@ import com.sai.weatherio.dependency_injection.DaggerApplicationComponent;
 import com.sai.weatherio.main.MainModule;
 import com.sai.weatherio.room.RoomModule;
 
-import javax.inject.Inject;
-
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
 import timber.log.Timber;
 
 /**

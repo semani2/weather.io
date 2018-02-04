@@ -1,7 +1,6 @@
 package com.sai.weatherio.dependency_injection;
 
 import com.sai.weatherio.api.WeatherApiModule;
-import com.sai.weatherio.app.WeatherApplication;
 import com.sai.weatherio.main.MainActivity;
 import com.sai.weatherio.main.MainModule;
 import com.sai.weatherio.room.RoomModule;
@@ -9,7 +8,6 @@ import com.sai.weatherio.room.RoomModule;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import dagger.android.AndroidInjectionModule;
 
 /**
  * Created by sai on 2/2/18.

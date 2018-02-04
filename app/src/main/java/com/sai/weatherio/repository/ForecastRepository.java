@@ -3,7 +3,6 @@ package com.sai.weatherio.repository;
 import com.sai.weatherio.R;
 import com.sai.weatherio.api.WeatherApiService;
 import com.sai.weatherio.api.model.ForecastDay;
-import com.sai.weatherio.api.model.Weather;
 import com.sai.weatherio.localization_service.ILocalizationService;
 import com.sai.weatherio.model.SingleDayForecast;
 import com.sai.weatherio.network_service.INetworkService;

@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
                         setListData(resource.data)
                         toggleListVisibility(true)
                         toggleBusy(false)
+                        location_edit_text.clearFocus()
                     } else if (resource.status.contentEquals(Resource.ERROR)) {
                         Snackbar.make(main_coordinator_layout, resource.message.toString(), Snackbar.LENGTH_LONG).show()
                         toggleListVisibility(false)
@@ -136,7 +137,6 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         list?.let {
             if(list.isEmpty()) {
                 Timber.d("Empty weather forecast, display empty list")
-                //Toast.makeText(this, "Empty weather", Toast.LENGTH_LONG).show()
                 return
             }
 

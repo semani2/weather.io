@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Weather.io</string>
+    <string name="app_name" translatable="false">Weather.io</string>
     <string name="str_enter_location">Fancy a quick weather forecast? Enter a location to get started.</string>
     <string name="str_location">Enter location</string>
 

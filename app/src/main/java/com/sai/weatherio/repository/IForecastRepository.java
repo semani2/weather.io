@@ -1,9 +1,5 @@
 package com.sai.weatherio.repository;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-
-import com.sai.weatherio.model.Resource;
 import com.sai.weatherio.model.SingleDayForecast;
 
 import java.util.List;
