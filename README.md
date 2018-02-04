@@ -9,13 +9,13 @@ It is build using Java, Kotlin, and Android architecture components.
 ![](./WeatherIOArch.png)
 
 The app follows a MVVM architecture pattern. The android activity functions as the view, the viewmodel holds the business logic
-and properties in the form of live data which the activity observes.
+and properties in the form of **LiveData** which the activity observes.
 
 The viewmodel works with the repository which abstracts out the data sources, in this case the weather underground API and the forecast 
 database.
 
-The Viewmodel extends the architecture components ViewModel class, the viewmodel holds LiveData objects that the activity observes.
-The caching was achieved using a SQLite database which makes use of the **Room persistence library**.
+The Viewmodel extends the architecture components' ViewModel class, the viewmodel holds LiveData objects that the activity observes.
+The caching was achieved using a SQLite database which was built using the **Room persistence library**.
 Caching comes in handy to provide quick data to the view and also provide weather data(albiet stale) when the user is offline.
 
 **Dependency injection** was achieved using the Dagger 2 library.
