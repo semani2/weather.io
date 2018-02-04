@@ -2,4 +2,10 @@
     <string name="app_name">Weather.io</string>
     <string name="str_enter_location">Please enter a location to fetch weather forecast</string>
     <string name="str_location">Enter location</string>
+
+    <string name="str_enter_valid_city_state">Please enter a valid city and state, ex: San Francisco, CA</string>
+    <string name="str_error_fetching_forecast">There was an error fetching weather forecast. Please try again.</string>
+    <string name="str_no_network">Looks like you do not have a valid network connection. Please try later.</string>
+    <string name="str_today">Today</string>
+    <string name="str_tomorrow">Tomorrow</string>
 </resources>

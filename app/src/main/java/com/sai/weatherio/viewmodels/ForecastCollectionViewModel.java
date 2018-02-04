@@ -3,6 +3,8 @@ package com.sai.weatherio.viewmodels;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.sai.weatherio.R;
+import com.sai.weatherio.localization_service.ILocalizationService;
 import com.sai.weatherio.model.Resource;
 import com.sai.weatherio.model.SingleDayForecast;
 import com.sai.weatherio.repository.IForecastRepository;
@@ -22,10 +24,13 @@ public class ForecastCollectionViewModel extends ViewModel{
 
     private final IForecastRepository mRepository;
 
+    private final ILocalizationService mLocalizationService;
+
     public MutableLiveData<Resource<List<SingleDayForecast>>> forecast = new MutableLiveData<>();
 
-    public ForecastCollectionViewModel(IForecastRepository repository) {
+    public ForecastCollectionViewModel(IForecastRepository repository, ILocalizationService localizationService) {
         this.mRepository = repository;
+        this.mLocalizationService = localizationService;
     }
 
     public void getForecast(String location) {
@@ -34,14 +39,14 @@ public class ForecastCollectionViewModel extends ViewModel{
 
     private void loadWeather(String location) {
         if(location.trim().isEmpty()) {
-            setError("Please enter a valid city and state, ex: San Francisco, CA");
+            setError(mLocalizationService.getString(R.string.str_enter_valid_city_state));
             return;
         }
 
         String[] locationSplit = location.split(",");
         if(location.trim().split(",").length < 2 || locationSplit[0].trim().isEmpty()
                 || locationSplit[1].trim().isEmpty() || locationSplit[1].trim().length() > 2) {
-            setError("Please enter a valid city and state, ex: San Francisco, CA");
+            setError(mLocalizationService.getString(R.string.str_enter_valid_city_state));
         } else {
             String city = locationSplit[0].trim().toLowerCase();
             String state = locationSplit[1].trim().toUpperCase();
@@ -50,8 +55,7 @@ public class ForecastCollectionViewModel extends ViewModel{
                 @Override
                 public void onNext(List<SingleDayForecast> singleDayForecasts) {
                     if(singleDayForecasts.size() == 0) {
-                        setError("There was an error fetching weather forecast. " +
-                                "Please try again!");
+                        setError(mLocalizationService.getString(R.string.str_error_fetching_forecast));
                         return;
                     }
                     Resource<List<SingleDayForecast>> listResource = Resource.success(singleDayForecasts);
@@ -60,8 +64,7 @@ public class ForecastCollectionViewModel extends ViewModel{
 
                 @Override
                 public void onError(Throwable t) {
-                    setError("There was an error fetching weather forecast. " +
-                            "Please try again!");
+                    setError(mLocalizationService.getString(R.string.str_error_fetching_forecast));
                 }
 
                 @Override

@@ -2,6 +2,7 @@ package com.sai.weatherio.main;
 
 import android.arch.lifecycle.ViewModelProvider;
 
+import com.sai.weatherio.localization_service.ILocalizationService;
 import com.sai.weatherio.repository.IForecastRepository;
 import com.sai.weatherio.viewmodels.ForecastViewModelFactory;
 
@@ -20,7 +21,7 @@ public class MainModule {
 
     @Provides
     @Singleton
-    public ViewModelProvider.Factory provideViewModelFactory(IForecastRepository logRepository) {
-        return new ForecastViewModelFactory(logRepository);
+    public ViewModelProvider.Factory provideViewModelFactory(IForecastRepository logRepository, ILocalizationService localizationService) {
+        return new ForecastViewModelFactory(logRepository, localizationService);
     }
 }

@@ -3,6 +3,8 @@ package com.sai.weatherio.dependency_injection;
 import android.app.Application;
 
 import com.sai.weatherio.app.WeatherApplication;
+import com.sai.weatherio.localization_service.ILocalizationService;
+import com.sai.weatherio.localization_service.LocalizationService;
 import com.sai.weatherio.main.MainActivity;
 import com.sai.weatherio.main.MainModule;
 import com.sai.weatherio.network_service.INetworkService;
@@ -37,5 +39,11 @@ public class ApplicationModule {
     @Singleton
     public INetworkService provideNetworkService() {
         return new NetworkService(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    public ILocalizationService provideLocalizationService() {
+        return new LocalizationService(mApplication);
     }
 }

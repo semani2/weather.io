@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room;
 
 import com.sai.weatherio.api.WeatherApiService;
 import com.sai.weatherio.app.WeatherApplication;
+import com.sai.weatherio.localization_service.ILocalizationService;
 import com.sai.weatherio.network_service.INetworkService;
 import com.sai.weatherio.repository.ForecastRepository;
 import com.sai.weatherio.repository.IForecastRepository;
@@ -29,9 +30,9 @@ public class RoomModule {
 
     @Provides
     @Singleton
-    public IForecastRepository provideWeatherRepository(ForecastDao forecastDao,
-                                                        WeatherApiService weatherApiService, INetworkService networkService) {
-        return new ForecastRepository(forecastDao, weatherApiService, networkService);
+    public IForecastRepository provideWeatherRepository(ForecastDao forecastDao, WeatherApiService weatherApiService,
+                                                        INetworkService networkService, ILocalizationService localizationService) {
+        return new ForecastRepository(forecastDao, weatherApiService, networkService, localizationService);
     }
 
     @Provides

@@ -1,8 +1,10 @@
 package com.sai.weatherio.repository;
 
+import com.sai.weatherio.R;
 import com.sai.weatherio.api.WeatherApiService;
 import com.sai.weatherio.api.model.ForecastDay;
 import com.sai.weatherio.api.model.Weather;
+import com.sai.weatherio.localization_service.ILocalizationService;
 import com.sai.weatherio.model.SingleDayForecast;
 import com.sai.weatherio.network_service.INetworkService;
 import com.sai.weatherio.room.ForecastDao;
@@ -30,15 +32,19 @@ public class ForecastRepository implements IForecastRepository {
 
     private final INetworkService mNetworkService;
 
+    private final ILocalizationService mLocalizationService;
+
     private long mTimestamp = 0;
 
     private static final long STALE_TIME = 15 * 1000;
 
     @Inject
-    public ForecastRepository(ForecastDao mForecastDao, WeatherApiService weatherApiService, INetworkService networkService) {
+    public ForecastRepository(ForecastDao mForecastDao, WeatherApiService weatherApiService,
+                              INetworkService networkService, ILocalizationService localizationService) {
         this.mForecastDao = mForecastDao;
         this.mWeatherApiService = weatherApiService;
         mNetworkService = networkService;
+        this.mLocalizationService = localizationService;
     }
 
     @Override
@@ -66,9 +72,9 @@ public class ForecastRepository implements IForecastRepository {
                             ForecastDay forecastDay = forecastDays[i];
                             String title = forecastDay.getTitle();
                             if(i == 0) {
-                                title = "Today";
+                                title = mLocalizationService.getString(R.string.str_today);
                             } else if( i == 2) {
-                                title = "Tomorrow";
+                                title = mLocalizationService.getString(R.string.str_tomorrow);
                             }
                             list.add(new SingleDayForecast(
                                    0, title, forecastDay.getIcon_url(),
