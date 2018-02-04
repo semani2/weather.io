@@ -16,43 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <android.support.v7.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/toolbar"
-                android:background="?attr/colorPrimary"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                android:elevation="6dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
-                        android:id="@+id/location_edit_text"
-                        android:hint="@string/str_location"
-                        android:textColor="@android:color/white"
-                        android:imeOptions="actionDone"
-                        android:textColorHint="@color/colorTextHint"
-                        android:backgroundTint="@color/colorAccent"
-                        android:maxLength="25"/>
-
-                    <ImageButton
-                        android:layout_width="0dp"
-                        android:layout_weight="0.2"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic_action_search"
-                        android:id="@+id/fetch_button"
-                        android:background="@android:color/transparent"
-                        android:layout_gravity="center_horizontal"
-                        android:visibility="gone"/>
-                </LinearLayout>
-            </android.support.v7.widget.Toolbar>
+            <include layout="@layout/toolbar" />
 
             <android.support.v4.widget.SwipeRefreshLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"

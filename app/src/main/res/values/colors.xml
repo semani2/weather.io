@@ -5,4 +5,5 @@
     <color name="colorPrimaryLight">#00bf9a</color>
     <color name="colorAccent">#FAB54D</color>
     <color name="colorTextHint">#CDCDCD</color>
+    <color name="colorTabletBackground">#DEDEDE</color>
 </resources>
