@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Weather.io</string>
+    <string name="str_enter_location">Please enter a location to fetch weather forecast</string>
+    <string name="str_location">Enter location</string>
 </resources>

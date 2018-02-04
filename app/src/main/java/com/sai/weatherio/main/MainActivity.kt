@@ -3,8 +3,10 @@ package com.sai.weatherio.main
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
@@ -19,6 +21,9 @@ import timber.log.Timber
 import javax.inject.Inject
 import android.support.v7.widget.DividerItemDecoration
 import android.view.View
+import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.view.inputmethod.InputMethodManager
 
 
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -50,7 +55,8 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
                         setListData(resource.data)
                         toggleListVisibility(true)
                     } else if (resource.status.contentEquals(Resource.ERROR)) {
-                        Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
+                        Snackbar.make(main_coordinator_layout, resource.message.toString(), Snackbar.LENGTH_LONG).show()
                         toggleListVisibility(false)
                     }
                 }
@@ -62,7 +68,13 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initFetch() {
-        fetch_button.setOnClickListener { fetchWeatherData() }
+        fetch_button.setOnClickListener {
+            fetchWeatherData()
+            val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(
+                    this.currentFocus!!.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS)
+        }
     }
 
     private fun fetchWeatherData() {
@@ -85,7 +97,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         list?.let {
             if(list.isEmpty()) {
                 Timber.d("Empty weather forecast, display empty list")
-                Toast.makeText(this, "Empty weather", Toast.LENGTH_LONG).show()
+                //Toast.makeText(this, "Empty weather", Toast.LENGTH_LONG).show()
                 return
             }
 
