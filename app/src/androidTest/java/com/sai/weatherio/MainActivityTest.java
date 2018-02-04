@@ -237,4 +237,22 @@ public class MainActivityTest {
 
     }
 
+    @Test
+    public void test_WrongLocation_ErrorSnackbarAppears() {
+        // Only city being typed in
+        onView(withId(R.id.location_edit_text)).perform(click())
+                .perform(typeText("City, St"));
+        onView(withId(R.id.fetch_button)).check(matches(isDisplayed()));
+
+        // Click on fetch button
+        onView(withId(R.id.fetch_button)).perform(click());
+
+        sleep(2000);
+
+        // Verify snackbar with error message is displayed to the user
+        onView(allOf(withId(android.support.design.R.id.snackbar_text),
+                withText(mActivityRule.getActivity().getString(R.string.str_error_fetching_forecast))))
+                .check(matches(isDisplayed()));
+    }
+
 }
