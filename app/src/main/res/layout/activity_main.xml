@@ -36,8 +36,8 @@
                         android:hint="@string/str_location"
                         android:textColor="@android:color/white"
                         android:imeOptions="actionDone"
-                        android:textColorHint="#CDCDCD"
-                        android:backgroundTint="#CDCDCD"/>
+                        android:textColorHint="@color/colorTextHint"
+                        android:backgroundTint="@color/colorAccent"/>
 
                     <ImageButton
                         android:layout_width="0dp"
