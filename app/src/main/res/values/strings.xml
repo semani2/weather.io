@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Weather.io</string>
-    <string name="str_enter_location">Fancy a quick weather forecast? Enter a location to get started.</string>
+    <string name="str_enter_location">Fancy a quick weather forecast? Enter a location to get started. ex: San Francisco, CA</string>
     <string name="str_location">Enter location</string>
 
     <string name="str_enter_valid_city_state">Please enter a valid city and state, ex: San Francisco, CA</string>
