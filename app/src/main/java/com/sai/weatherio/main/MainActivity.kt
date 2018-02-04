@@ -24,9 +24,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.text.Editable
 
-
-
-
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     @Inject lateinit var viewmodelFactory: ViewModelProvider.Factory
 
@@ -55,10 +52,11 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
                         swipe_container.isRefreshing = false
                         setListData(resource.data)
                         toggleListVisibility(true)
+                        toggleBusy(false)
                     } else if (resource.status.contentEquals(Resource.ERROR)) {
-                        //Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
                         Snackbar.make(main_coordinator_layout, resource.message.toString(), Snackbar.LENGTH_LONG).show()
                         toggleListVisibility(false)
+                        toggleBusy(false)
                     }
                 }
             }
@@ -87,6 +85,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         })
 
         fetch_button.setOnClickListener {
+            toggleBusy(true)
             fetchWeatherData()
             val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputManager.hideSoftInputFromWindow(
@@ -133,5 +132,18 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     private fun toggleListVisibility(isListVisible: Boolean) {
         swipe_container.visibility = if(isListVisible) View.VISIBLE else View.GONE
         emptyLayout.visibility = if(isListVisible) View.GONE else View.VISIBLE
+    }
+
+    private fun toggleBusy(isBusy: Boolean) {
+        progress_bar_layout.visibility = if(isBusy) View.VISIBLE else View.GONE
+        when(isBusy) {
+            true -> {
+                progress_bar_layout.visibility = View.VISIBLE
+                emptyLayout.visibility = View.GONE
+            }
+            false -> {
+                progress_bar_layout.visibility = View.GONE
+            }
+        }
     }
 }
