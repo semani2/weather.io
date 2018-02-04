@@ -39,8 +39,7 @@ public class ForecastRepository implements IForecastRepository {
 
     @Override
     public Flowable<List<SingleDayForecast>> loadWeather(String city, String state) {
-        return loadWeatherFromApi(city, state);
-                //: loadWeatherFromCache(city, state).switchIfEmpty(loadWeatherFromApi(city, state));
+        return loadWeatherFromCache(city, state).switchIfEmpty(loadWeatherFromApi(city, state));
     }
 
     private Flowable<List<SingleDayForecast>> loadWeatherFromApi(final String city, final String state) {
@@ -82,10 +81,7 @@ public class ForecastRepository implements IForecastRepository {
 
     private Flowable<List<SingleDayForecast>> loadWeatherFromCache(String city, String state) {
         if(isDataUptoDate()) {
-            List<SingleDayForecast> forecastList = mForecastDao.getWeatherForecast(city, state);
-
-            if (forecastList == null || forecastList.size() == 0) return Flowable.empty();
-            return Flowable.just(forecastList);
+            return mForecastDao.getWeatherForecast(city, state);
         }
         mTimestamp = System.currentTimeMillis();
         return Flowable.empty();

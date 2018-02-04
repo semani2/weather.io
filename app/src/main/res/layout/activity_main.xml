@@ -41,7 +41,8 @@
                     android:src="@drawable/ic_action_search"
                     android:id="@+id/fetch_button"
                     android:background="@android:color/transparent"
-                    android:layout_gravity="center_horizontal"/>
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"/>
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
 

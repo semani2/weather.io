@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
 import com.sai.weatherio.R
 import com.sai.weatherio.adapters.ForecastAdapter
 import com.sai.weatherio.app.WeatherApplication
@@ -20,10 +19,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
 import android.support.v7.widget.DividerItemDecoration
+import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.inputmethod.InputMethodManager
+import android.text.Editable
+
+
 
 
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -68,6 +69,23 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initFetch() {
+        location_edit_text.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                fetch_button.visibility = if (s.isNotEmpty())
+                    View.VISIBLE
+                else
+                    View.GONE
+            }
+        })
+
         fetch_button.setOnClickListener {
             fetchWeatherData()
             val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
