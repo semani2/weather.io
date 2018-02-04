@@ -49,15 +49,19 @@ public class ForecastCollectionViewModel extends ViewModel{
             final DisposableSubscriber<List<SingleDayForecast>> subscriber = new DisposableSubscriber<List<SingleDayForecast>>() {
                 @Override
                 public void onNext(List<SingleDayForecast> singleDayForecasts) {
+                    if(singleDayForecasts.size() == 0) {
+                        setError("There was an error fetching weather forecast. " +
+                                "Please try again!");
+                        return;
+                    }
                     Resource<List<SingleDayForecast>> listResource = Resource.success(singleDayForecasts);
                     forecast.setValue(listResource);
                 }
 
                 @Override
                 public void onError(Throwable t) {
-                    Resource<List<SingleDayForecast>> errorResource = Resource.error("There was an error fetching weather forecast. " +
+                    setError("There was an error fetching weather forecast. " +
                             "Please try again!");
-                    forecast.setValue(errorResource);
                 }
 
                 @Override

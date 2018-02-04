@@ -4,6 +4,7 @@ import com.sai.weatherio.api.WeatherApiService;
 import com.sai.weatherio.api.model.ForecastDay;
 import com.sai.weatherio.api.model.Weather;
 import com.sai.weatherio.model.SingleDayForecast;
+import com.sai.weatherio.network_service.INetworkService;
 import com.sai.weatherio.room.ForecastDao;
 
 import java.util.ArrayList;
@@ -27,14 +28,17 @@ public class ForecastRepository implements IForecastRepository {
 
     private final WeatherApiService mWeatherApiService;
 
+    private final INetworkService mNetworkService;
+
     private long mTimestamp = 0;
 
     private static final long STALE_TIME = 15 * 1000;
 
     @Inject
-    public ForecastRepository(ForecastDao mForecastDao, WeatherApiService weatherApiService) {
+    public ForecastRepository(ForecastDao mForecastDao, WeatherApiService weatherApiService, INetworkService networkService) {
         this.mForecastDao = mForecastDao;
         this.mWeatherApiService = weatherApiService;
+        mNetworkService = networkService;
     }
 
     @Override
@@ -43,6 +47,10 @@ public class ForecastRepository implements IForecastRepository {
     }
 
     private Flowable<List<SingleDayForecast>> loadWeatherFromApi(final String city, final String state) {
+        if(!isNetworkAvailable()) {
+            return Flowable.error(new Exception("No network connection"));
+        }
+
         return mWeatherApiService.getWeatherForecast(state, city)
                 .map(new Function<Weather, ForecastDay[]>() {
                     @Override
@@ -88,6 +96,11 @@ public class ForecastRepository implements IForecastRepository {
     }
 
     private boolean isDataUptoDate() {
-        return System.currentTimeMillis() - mTimestamp < STALE_TIME;
+        return !isNetworkAvailable() || System.currentTimeMillis() - mTimestamp < STALE_TIME;
+
+    }
+
+    private boolean isNetworkAvailable() {
+        return mNetworkService.isNetworkAvailable();
     }
 }
