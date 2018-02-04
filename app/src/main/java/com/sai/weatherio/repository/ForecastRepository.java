@@ -16,8 +16,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * Created by sai on 2/3/18.
@@ -43,7 +41,7 @@ public class ForecastRepository implements IForecastRepository {
                               INetworkService networkService, ILocalizationService localizationService) {
         this.mForecastDao = mForecastDao;
         this.mWeatherApiService = weatherApiService;
-        mNetworkService = networkService;
+        this.mNetworkService = networkService;
         this.mLocalizationService = localizationService;
     }
 
@@ -58,38 +56,27 @@ public class ForecastRepository implements IForecastRepository {
         }
 
         return mWeatherApiService.getWeatherForecast(state, city)
-                .map(new Function<Weather, ForecastDay[]>() {
-                    @Override
-                    public ForecastDay[] apply(Weather weather) throws Exception {
-                        return weather.getForecast().getTxt_forecast().getForecastday();
-                    }
-                })
-                .map(new Function<ForecastDay[], List<SingleDayForecast>>() {
-                    @Override
-                    public List<SingleDayForecast> apply(ForecastDay[] forecastDays) throws Exception {
-                        List<SingleDayForecast> list = new ArrayList<>();
-                        for(int i = 0; i < forecastDays.length - 1; i+=2) {
-                            ForecastDay forecastDay = forecastDays[i];
-                            String title = forecastDay.getTitle();
-                            if(i == 0) {
-                                title = mLocalizationService.getString(R.string.str_today);
-                            } else if( i == 2) {
-                                title = mLocalizationService.getString(R.string.str_tomorrow);
-                            }
-                            list.add(new SingleDayForecast(
-                                   0, title, forecastDay.getIcon_url(),
-                                    forecastDay.getFcttext(), city, state
-                            ));
+                .map(weather -> weather.getForecast().getTxt_forecast().getForecastday())
+                .map(forecastDays -> {
+                    List<SingleDayForecast> list = new ArrayList<>();
+                    for(int i = 0; i < forecastDays.length - 1; i+=2) {
+                        ForecastDay forecastDay = forecastDays[i];
+                        String title = forecastDay.getTitle();
+                        if(i == 0) {
+                            title = mLocalizationService.getString(R.string.str_today);
+                        } else if( i == 2) {
+                            title = mLocalizationService.getString(R.string.str_tomorrow);
                         }
-                        return list;
+                        list.add(new SingleDayForecast(
+                               0, title, forecastDay.getIcon_url(),
+                                forecastDay.getFcttext(), city, state
+                        ));
                     }
+                    return list;
                 })
-                .doOnNext(new Consumer<List<SingleDayForecast>>() {
-                    @Override
-                    public void accept(List<SingleDayForecast> singleDayForecasts) throws Exception {
-                        mForecastDao.deleteWeatherData(city, state);
-                        mForecastDao.insertForecasts(singleDayForecasts);
-                    }
+                .doOnNext(singleDayForecasts -> {
+                    mForecastDao.deleteWeatherData(city, state);
+                    mForecastDao.insertForecasts(singleDayForecasts);
                 });
     }
 
