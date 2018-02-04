@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
 import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.RecyclerView
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -31,7 +32,11 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: ForecastAdapter
 
+    private lateinit var layoutManager: LinearLayoutManager
+
     private val forecastList: MutableList<SingleDayForecast> = mutableListOf()
+
+    private val sScrollPosition = "scroll_position"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +69,22 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
         initRecyclerView()
         initFetch()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        val scrollPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+        outState?.putInt(sScrollPosition, scrollPosition)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState?.let {
+            val scrollPosition: Int = savedInstanceState.getInt(sScrollPosition)
+            val count = layoutManager.childCount
+            if(scrollPosition != RecyclerView.NO_POSITION && scrollPosition < count)
+                layoutManager.scrollToPosition(scrollPosition)
+        }
     }
 
     private fun initFetch() {
@@ -99,11 +120,11 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initRecyclerView() {
-        val linearLayoutManager = LinearLayoutManager(this)
-        forecast_recycler_view.layoutManager = linearLayoutManager
+        layoutManager = LinearLayoutManager(this)
+        forecast_recycler_view.layoutManager = layoutManager
 
         val dividerItemDecoration = DividerItemDecoration(forecast_recycler_view.context,
-                linearLayoutManager.orientation)
+                layoutManager.orientation)
         forecast_recycler_view.addItemDecoration(dividerItemDecoration)
 
         adapter = ForecastAdapter(this, forecastList)
