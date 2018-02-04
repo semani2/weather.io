@@ -55,7 +55,8 @@ public class ForecastCollectionViewModel extends ViewModel{
 
                 @Override
                 public void onError(Throwable t) {
-                    Resource<List<SingleDayForecast>> errorResource = Resource.error(t.getLocalizedMessage());
+                    Resource<List<SingleDayForecast>> errorResource = Resource.error("There was an error fetching weather forecast. " +
+                            "Please try again!");
                     forecast.setValue(errorResource);
                 }
 

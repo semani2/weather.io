@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
 import android.support.v7.widget.DividerItemDecoration
-
+import android.view.View
 
 
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -48,8 +48,10 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
                     if (resource.status.contentEquals(Resource.SUCCESS)) {
                         swipe_container.isRefreshing = false
                         setListData(resource.data)
+                        toggleListVisibility(true)
                     } else if (resource.status.contentEquals(Resource.ERROR)) {
                         Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
+                        toggleListVisibility(false)
                     }
                 }
             }
@@ -96,5 +98,10 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         swipe_container.isRefreshing = true
         fetchWeatherData()
+    }
+
+    private fun toggleListVisibility(isListVisible: Boolean) {
+        swipe_container.visibility = if(isListVisible) View.VISIBLE else View.GONE
+        emptyLayout.visibility = if(isListVisible) View.GONE else View.VISIBLE
     }
 }
