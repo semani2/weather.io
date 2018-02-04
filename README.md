@@ -36,4 +36,4 @@ Caching comes in handy to provide quick data to the view and also provide weathe
 * Espresso (Automation/UI testing)
 * Stetho (for debugging purposes only...)
 
-**P.S**: The app uses responsive design to work with different phone and tablet sizes, inflating different layouts to achieve this. Please find screenshots in the screenshots folder.
+**P.S**: The app uses responsive design to work with different phone and tablet sizes. Please find screenshots in the screenshots folder.
