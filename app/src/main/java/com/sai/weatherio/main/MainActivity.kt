@@ -17,6 +17,9 @@ import com.sai.weatherio.viewmodels.ForecastCollectionViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
+import android.support.v7.widget.DividerItemDecoration
+
+
 
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     @Inject lateinit var viewmodelFactory: ViewModelProvider.Factory
@@ -65,7 +68,12 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initRecyclerView() {
-        forecast_recycler_view.layoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(this)
+        forecast_recycler_view.layoutManager = linearLayoutManager
+
+        val dividerItemDecoration = DividerItemDecoration(forecast_recycler_view.context,
+                linearLayoutManager.orientation)
+        forecast_recycler_view.addItemDecoration(dividerItemDecoration)
 
         adapter = ForecastAdapter(this, forecastList)
         forecast_recycler_view.adapter = adapter
