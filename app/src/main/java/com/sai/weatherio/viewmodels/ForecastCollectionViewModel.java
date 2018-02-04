@@ -45,7 +45,7 @@ public class ForecastCollectionViewModel extends ViewModel{
 
         String[] locationSplit = location.split(",");
         if(location.trim().split(",").length < 2 || locationSplit[0].trim().isEmpty()
-                || locationSplit[1].trim().isEmpty() || locationSplit[1].trim().length() > 2) {
+                || locationSplit[1].trim().isEmpty() || locationSplit[1].trim().length() > 2 || locationSplit[1].trim().length() < 2) {
             setError(mLocalizationService.getString(R.string.str_enter_valid_city_state));
         } else {
             String city = locationSplit[0].trim().toLowerCase();
@@ -81,6 +81,6 @@ public class ForecastCollectionViewModel extends ViewModel{
     }
 
     private void setError(String msg) {
-        forecast.setValue(Resource.<List<SingleDayForecast>>error(msg));
+        forecast.setValue(Resource.error(msg));
     }
 }

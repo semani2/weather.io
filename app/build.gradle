@@ -103,6 +103,7 @@ dependencies {
 
     // Dependencies for Android unit tests
     testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "android.arch.core:core-testing:$archVersion"
 
     // Espresso UI Testing
     androidTestCompile "com.android.support.test.espresso:espresso-core:$espressoVersion"

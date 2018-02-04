@@ -11,21 +11,13 @@ import com.sai.weatherio.room.ForecastDao;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.internal.operators.flowable.FlowableFromPublisher;
-import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
@@ -62,8 +54,6 @@ public class ForecastRepositoryTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mRepository = new ForecastRepository(mForecastDao, mWeatherApiService, mNetworkService, mLocalizationService);
-
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
     }
 
     @Test
