@@ -44,7 +44,8 @@
                     android:src="@drawable/ic_launcher_round"
                     android:layout_above="@+id/empty_title_text_view"
                     android:layout_marginBottom="20dp"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/empty_icon_image_view"/>
 
                 <TextView
                     android:id="@+id/empty_title_text_view"

@@ -35,6 +35,7 @@
             android:id="@+id/fetch_button"
             android:background="@android:color/transparent"
             android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_marginStart="20dp"/>
     </LinearLayout>
 </android.support.v7.widget.Toolbar>
