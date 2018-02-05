@@ -235,7 +235,7 @@ public class MainActivityTest {
         // Click on fetch button
         onView(withId(R.id.fetch_button)).perform(click());
 
-        sleep(2000);
+        sleep(1000);
 
         // Verify snackbar with error message is displayed to the user
         onView(allOf(withId(android.support.design.R.id.snackbar_text),
