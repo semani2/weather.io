@@ -146,20 +146,11 @@ public class MainActivityTest {
                 .perform(typeText("Austin, TX"));
         onView(withId(R.id.fetch_button)).check(matches(isDisplayed()));
 
-        // Sleep for 16 seconds to invalidate cached data
-        sleep(16000);
-
         // Perform click
         onView(withId(R.id.fetch_button)).perform(click());
 
-        // Progress bar appears
-        onView(withId(R.id.progress_bar_layout)).check(matches(isDisplayed()));
-
         // Safety to ensure weather forecast is fetched
         sleep(2000);
-
-        // Progress bar disappears
-        onView(withId(R.id.progress_bar_layout)).check(matches(not(isDisplayed())));
 
         // Empty state not visible any more
         onView(withId(R.id.empty_icon_image_view)).check(matches(not(isDisplayed())));

@@ -71,7 +71,7 @@ public class ForecastRepositoryTest {
     }
 
     @Test
-    public void test_APIWillBeAccessedWhenOnline_CacheNoData() {
+    public void test_APIWillBeAccessedWhenOnline() {
         when(mNetworkService.isNetworkAvailable()).thenReturn(true);
 
         when(mWeatherApiService.getWeatherForecast(STATE, CITY)).thenReturn(Flowable.just(mWeather));
@@ -81,46 +81,5 @@ public class ForecastRepositoryTest {
         verify(mNetworkService, times(2)).isNetworkAvailable();
         verify(mForecastDao, times(0)).getWeatherForecast(CITY, STATE);
         verify(mWeatherApiService, times(1)).getWeatherForecast(STATE, CITY);
-    }
-
-    @Test
-    public void test_CacheWillBeAccessed_LessThan_15Seconds() {
-        when(mNetworkService.isNetworkAvailable()).thenReturn(true);
-
-        when(mWeatherApiService.getWeatherForecast(STATE, CITY)).thenReturn(Flowable.just(mWeather));
-        mRepository.loadWeather(CITY, STATE);
-
-        verify(mNetworkService, atLeast(2)).isNetworkAvailable();
-        verify(mForecastDao, times(0)).getWeatherForecast(CITY, STATE);
-        verify(mWeatherApiService, times(1)).getWeatherForecast(STATE, CITY);
-
-        mList.add(mForecast);
-        when(mForecastDao.getWeatherForecast(CITY, STATE)).thenReturn(Flowable.just(mList));
-
-        mRepository.loadWeather(CITY, STATE);
-
-        verify(mForecastDao, times(1)).getWeatherForecast(CITY, STATE);
-    }
-
-    @Test
-    public void test_CacheNotAccessed_MoreThan_15Seconds() {
-        when(mNetworkService.isNetworkAvailable()).thenReturn(true);
-
-        when(mWeatherApiService.getWeatherForecast(STATE, CITY)).thenReturn(Flowable.just(mWeather));
-        mRepository.loadWeather(CITY, STATE);
-
-        verify(mNetworkService, atLeast(2)).isNetworkAvailable();
-        verify(mForecastDao, times(0)).getWeatherForecast(CITY, STATE);
-        verify(mWeatherApiService, times(1)).getWeatherForecast(STATE, CITY);
-
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        mRepository.loadWeather(CITY, STATE);
-
-        verify(mForecastDao, times(0)).getWeatherForecast(CITY, STATE);
     }
 }

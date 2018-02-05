@@ -31,10 +31,6 @@ public class ForecastRepository implements IForecastRepository {
 
     private final ILocalizationService mLocalizationService;
 
-    private long mTimestamp = 0;
-
-    private static final long STALE_TIME = 15 * 1000;
-
     @Inject
     public ForecastRepository(ForecastDao mForecastDao, WeatherApiService weatherApiService,
                               INetworkService networkService, ILocalizationService localizationService) {
@@ -46,7 +42,7 @@ public class ForecastRepository implements IForecastRepository {
 
     @Override
     public Flowable<List<SingleDayForecast>> loadWeather(String city, String state) {
-        return loadWeatherFromCache(city, state).switchIfEmpty(loadWeatherFromApi(city, state));
+        return isNetworkAvailable() ? loadWeatherFromApi(city, state) : loadWeatherFromCache(city, state);
     }
 
     private Flowable<List<SingleDayForecast>> loadWeatherFromApi(final String city, final String state) {
@@ -80,16 +76,7 @@ public class ForecastRepository implements IForecastRepository {
     }
 
     private Flowable<List<SingleDayForecast>> loadWeatherFromCache(String city, String state) {
-        if(isDataUptoDate()) {
-            return mForecastDao.getWeatherForecast(city, state);
-        }
-        mTimestamp = System.currentTimeMillis();
-        return Flowable.empty();
-    }
-
-    private boolean isDataUptoDate() {
-        return !isNetworkAvailable() || System.currentTimeMillis() - mTimestamp < STALE_TIME;
-
+        return mForecastDao.getWeatherForecast(city, state);
     }
 
     private boolean isNetworkAvailable() {
