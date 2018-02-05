@@ -22,7 +22,7 @@ Caching comes in handy to provide quick data to the view and also provide weathe
 
 ### Testing efforts
 * The viewmodel and the repository have been unit tested for positive and erroneous situations.
-* Automation testing was used to test the view(activity).
+* Automation testing was used to test the view(activity). The automation tests run best on a real device.
 
 ### Other tools used on the project
 * Kotlin (the view and a couple of model classes were written in Kotlin)
