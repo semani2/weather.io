@@ -212,9 +212,6 @@ public class MainActivityTest {
         // Perform click
         onView(withId(R.id.fetch_button)).perform(click());
 
-        // Progress bar appears
-        onView(withId(R.id.progress_bar_layout)).check(matches(isDisplayed()));
-
         // Safety to ensure weather forecast is fetched
         sleep(2000);
 
